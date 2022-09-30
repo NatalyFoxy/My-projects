@@ -1,0 +1,157 @@
+let time = document.querySelector("#current-time");
+let weakDay = document.querySelector("#current-day");
+
+let now = new Date();
+let days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+let day = now.getDay();
+let hours = now.getHours();
+let minutes = now.getMinutes();
+
+time.innerHTML = `${hours}:${minutes}`;
+weakDay.innerHTML = days[now.getDay()];
+
+function displayWeather(response) {
+  console.log(response.data.weather[0].description);
+  document.querySelector(".city").innerHTML = response.data.name;
+  document.querySelector("#temperature").innerHTML = Math.round(
+    response.data.main.temp
+  );
+  document.querySelector("#wind").innerHTML = Math.round(
+    response.data.wind.speed
+  );
+  document.querySelector("#humidity").innerHTML = Math.fround(
+    response.data.main.humidity
+  );
+  document.querySelector("#description").innerHTML =
+    response.data.weather[0].description;
+}
+
+function search(city) {
+  let apiKey = "2bd326a60dc89a53287e446e819664df";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayWeather);
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+  let city = document.querySelector("#search-text-input").value;
+  search(city);
+
+  // let searchInput = document.querySelector("#search-text-input");
+
+  // let city = document.querySelector(".city");
+  // city.innerHTML = `${searchInput.value}`;
+}
+function searchLocation(position) {
+  let apiKey = "2bd326a60dc89a53287e446e819664df";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${
+    position.coords.latitude
+  }&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayWeather);
+}
+
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
+
+}
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+let currentButton = document.querySelector("#current-button");
+currentButton.addEventListener("click", getCurrentLocation);
+
+search("Kiev");
+
+// new challenge
+
+// function convertToFahrenheit(event) {
+//   event.preventDefault();
+//   let temperature = document.querySelector("#current-temperature");
+
+//   temperature.innerHTML = (25 * 9) / 5 + 32;
+// }
+
+// function convertToCelsius(event) {
+//   event.preventDefault();
+//   let temperature = document.querySelector("#current-temperature");
+//   temperature.innerHTML = 25;
+// }
+
+// let fahrenheitLink = document.querySelector("#f-link");
+// fahrenheitLink.addEventListener("click", convertToFahrenheit);
+
+// let celsiusLink = document.querySelector("#c-link");
+// celsiusLink.addEventListener("click", convertToCelsius);
+
+// // final 4 week
+// function displayWeatherCondition(response) {
+//   document.querySelector("#city").innerHTML = response.data.name;
+//   document.querySelector("#current-temperature").innerHTML = Math.round(
+//     response.data.main.temp
+//   );
+
+//   document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+//   document.querySelector("#wind").innerHTML = Math.round(
+//     response.data.wind.speed
+//   );
+//   document.querySelector("#description").innerHTML =
+//     response.data.weather[0].main;
+// }
+
+// function searchCity(city) {
+//   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
+//   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+//   axios.get(apiUrl).then(displayWeatherCondition);
+// }
+
+// function handleSubmit(event) {
+//   event.preventDefault();
+//   let city = document.querySelector("#search-text-input").value;
+//   searchCity(city);
+// }
+
+// function searchLocation(position) {
+//   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
+//   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${
+//     position.coords.latitude
+//   }&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+
+//   axios.get(apiUrl).then(displayWeatherCondition);
+// }
+
+// function getCurrentLocation(event) {
+//   event.preventDefault();
+//navigator.geolocation.getCurrentPosition(searchLocation);
+// }
+
+// function convertToFahrenheit(event) {
+//   event.preventDefault();
+//   let temperatureElement = document.querySelector("#temperature");
+//   temperatureElement.innerHTML = 66;
+// }
+
+// function convertToCelsius(event) {
+//   event.preventDefault();
+//   let temperatureElement = document.querySelector("#temperature");
+//   temperatureElement.innerHTML = 19;
+// }
+
+// let dateElement = document.querySelector("#date");
+// let currentTime = new Date();
+// dateElement.innerHTML = formatDate(currentTime);
+
+// let searchForm = document.querySelector("#search-text-input");
+// searchForm.addEventListener("submit", handleSubmit);
+
+// let currentLocationButton = document.querySelector("#current-button");
+// currentLocationButton.addEventListener("click", getCurrentLocation);
